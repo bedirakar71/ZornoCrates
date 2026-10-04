@@ -293,7 +293,6 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
 
         if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
             player.sendMessage(PREFIX + ChatColor.AQUA + crate.displayName + " Kasası içerikleri inceleniyor...");
-            // Örnek önizleme tetikleyicisi
         } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             ItemStack hand = player.getInventory().getItemInMainHand();
             if (!isSimilarKey(hand, crate.keyItem)) {
@@ -322,7 +321,6 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
         List<ArmorStand> stands = new ArrayList<>();
         Location baseLoc = loc.clone().add(0.5, 0.3, 0.5);
 
-        // İstediğin PhoenixCrates tarzı çoklu satır hologram yapısı
         String[] lines = {
             ChatColor.translateAlternateColorCodes('&', "&8Sağ-Tık &7Kasayı Açar!"),
             ChatColor.translateAlternateColorCodes('&', "&8Sol-Tık &7Kasayı Görüntüler!"),
@@ -332,11 +330,12 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
 
         for (int i = 0; i < lines.length; i++) {
             Location lineLoc = baseLoc.clone().add(0, i * 0.25, 0);
+            final int index = i; // Fix lambda effectively final requirement
             ArmorStand stand = loc.getWorld().spawn(lineLoc, ArmorStand.class, s -> {
                 s.setGravity(false);
                 s.setVisible(false);
                 s.setCustomNameVisible(true);
-                s.setCustomName(lines[lines.length - 1 - i]); // Doğru sıra için tersliyoruz
+                s.setCustomName(lines[lines.length - 1 - index]);
             });
             stands.add(stand);
         }
@@ -434,4 +433,4 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
             this.rewards = rewards;
         }
     }
-}
+                    }
