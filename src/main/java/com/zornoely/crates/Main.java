@@ -172,7 +172,6 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
     private void openManageGUI(Player player, CrateData crate) {
         Inventory inv = Bukkit.createInventory(null, 27, ChatColor.translateAlternateColorCodes('&', "&8Yönetim: &5" + crate.displayName));
 
-        // Tema Değiştirme
         ItemStack colorItem = new ItemStack(Material.NAME_TAG);
         ItemMeta cm = colorItem.getItemMeta();
         if (cm != null) {
@@ -182,7 +181,6 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
         }
         inv.setItem(10, colorItem);
 
-        // Blok Materyali Güncelleme (Elindeki blok/eşya ile)
         ItemStack blockItem = new ItemStack(crate.blockMaterial);
         ItemMeta bm = blockItem.getItemMeta();
         if (bm != null) {
@@ -192,7 +190,6 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
         }
         inv.setItem(12, blockItem);
 
-        // Anahtar Güncelleme
         ItemStack keyItem = new ItemStack(Material.TRIPWIRE_HOOK);
         ItemMeta km = keyItem.getItemMeta();
         if (km != null) {
@@ -202,7 +199,6 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
         }
         inv.setItem(14, keyItem);
 
-        // Ödülleri Düzenle
         ItemStack rewardItem = new ItemStack(Material.EMERALD);
         ItemMeta rm = rewardItem.getItemMeta();
         if (rm != null) {
@@ -257,7 +253,7 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
             CrateData crate = crates.get(crateName);
             if (crate == null) return;
 
-            if (event.getRawSlot() == 10) { // Tema değiştir
+            if (event.getRawSlot() == 10) {
                 if (crate.colorTheme.equals("MOR")) crate.colorTheme = "ALTIN";
                 else if (crate.colorTheme.equals("ALTIN")) crate.colorTheme = "MAVİ";
                 else crate.colorTheme = "MOR";
@@ -265,7 +261,7 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
                 saveData();
                 player.sendMessage(PREFIX + ChatColor.LIGHT_PURPLE + "Tema güncellendi: " + crate.colorTheme);
                 openManageGUI(player, crate);
-            } else if (event.getRawSlot() == 12) { // Kasa bloğunu eldeki eşya yap
+            } else if (event.getRawSlot() == 12) {
                 ItemStack handItem = player.getInventory().getItemInMainHand();
                 if (handItem.getType() == Material.AIR || !handItem.getType().isBlock()) {
                     player.sendMessage(PREFIX + ChatColor.RED + "Elinde geçerli yerleştirilebilir bir blok olmalı!");
@@ -275,7 +271,7 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
                 saveData();
                 player.sendMessage(PREFIX + ChatColor.GREEN + "Kasa blok materyali güncellendi: " + crate.blockMaterial.name());
                 openManageGUI(player, crate);
-            } else if (event.getRawSlot() == 14) { // Anahtar güncelle
+            } else if (event.getRawSlot() == 14) {
                 ItemStack handItem = player.getInventory().getItemInMainHand();
                 if (handItem.getType() == Material.AIR) {
                     player.sendMessage(PREFIX + ChatColor.RED + "Elinde yeni anahtar olacak bir eşya olmalı!");
@@ -284,7 +280,7 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
                 crate.keyItem = handItem.clone();
                 saveData();
                 player.sendMessage(PREFIX + ChatColor.GREEN + "Kasa anahtarı güncellendi!");
-            } else if (event.getRawSlot() == 16) { // Ödül menüsü
+            } else if (event.getRawSlot() == 16) {
                 openRewardsGUI(player, crate);
             }
         } else if (title.contains("Ödüller:")) {
@@ -459,4 +455,13 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
             getConfig().set(p + ".world", l.getWorld().getName());
             getConfig().set(p + ".x", l.getBlockX());
             getConfig().set(p + ".y", l.getBlockY());
-            getConfig().se
+            getConfig().set(p + ".z", l.getBlockZ());
+            getConfig().set(p + ".crate", entry.getValue());
+        }
+        saveConfig();
+    }
+
+    @SuppressWarnings("unchecked")
+    private void loadData() {
+        crates.clear();
+        placed
