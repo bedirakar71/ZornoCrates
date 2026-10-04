@@ -20,3 +20,4 @@ jobs:
       with:
         name: ZornoCrates
         path: target/ZornoCrates-1.0-SNAPSHOT.jar
+        
