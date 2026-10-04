@@ -435,7 +435,6 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
             }
         }
     }
-
     private void saveData() {
         getConfig().set("crates", null);
         for (CrateData c : crates.values()) {
@@ -464,4 +463,61 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
     @SuppressWarnings("unchecked")
     private void loadData() {
         crates.clear();
-        placed
+        placedCrates.clear();
+        ConfigurationSection sec = getConfig().getConfigurationSection("crates");
+        if (sec != null) {
+            for (String name : sec.getKeys(false)) {
+                String path = "crates." + name;
+                String displayName = getConfig().getString(path + ".displayName", name);
+                String colorTheme = getConfig().getString(path + ".colorTheme", "MOR");
+                Material mat = Material.matchMaterial(getConfig().getString(path + ".material", "CHEST"));
+                if (mat == null) mat = Material.CHEST;
+                ItemStack key = getConfig().getItemStack(path + ".keyItem");
+                if (key == null) key = new ItemStack(Material.TRIPWIRE_HOOK);
+                
+                List<ItemStack> rewards = (List<ItemStack>) getConfig().getList(path + ".rewards");
+                if (rewards == null) rewards = new ArrayList<>();
+
+                crates.put(name.toLowerCase(), new CrateData(displayName, mat, colorTheme, key, rewards));
+            }
+        }
+
+        ConfigurationSection pSec = getConfig().getConfigurationSection("placed");
+        if (pSec != null) {
+            for (String key : pSec.getKeys(false)) {
+                String path = "placed." + key;
+                String worldName = getConfig().getString(path + ".world");
+                if (worldName == null || Bukkit.getWorld(worldName) == null) continue;
+                Location l = new Location(
+                        Bukkit.getWorld(worldName),
+                        getConfig().getInt(path + ".x"),
+                        getConfig().getInt(path + ".y"),
+                        getConfig().getInt(path + ".z")
+                );
+                String crateName = getConfig().getString(path + ".crate");
+                if (crateName != null && crates.containsKey(crateName)) {
+                    placedCrates.put(l, crateName);
+                    spawnHologram(l, crates.get(crateName));
+                }
+            }
+        }
+    }
+
+    private static class CrateData {
+        private String name;
+        private String displayName;
+        private Material blockMaterial;
+        private String colorTheme;
+        private ItemStack keyItem;
+        private List<ItemStack> rewards;
+
+        public CrateData(String displayName, Material blockMaterial, String colorTheme, ItemStack keyItem, List<ItemStack> rewards) {
+            this.name = displayName.toLowerCase();
+            this.displayName = displayName;
+            this.blockMaterial = blockMaterial;
+            this.colorTheme = colorTheme;
+            this.keyItem = keyItem;
+            this.rewards = rewards;
+        }
+    }
+}
