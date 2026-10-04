@@ -30,7 +30,7 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
     private final Map<String, CrateData> crates = new HashMap<>();
     private final Map<Location, String> placedCrates = new HashMap<>();
     private final Map<Location, List<ArmorStand>> holograms = new HashMap<>();
-    private final String PREFIX = ChatColor.translateAlternateColorCodes('&', "&8[&bZornoEly&8] &7");
+    private final String PREFIX = ChatColor.translateAlternateColorCodes('&', "&8[&5ZornoEly&8] &7");
 
     @Override
     public void onEnable() {
@@ -39,7 +39,7 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
             getCommand("kasa").setExecutor(this);
         }
         loadData();
-        getLogger().info("ZornoCrates Kasa Sistemi aktif edildi!");
+        getLogger().info("ZornoCrates Gelişmiş Kasa Sistemi aktif edildi!");
     }
 
     @Override
@@ -52,7 +52,7 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
                 }
             }
         }
-        getLogger().info("ZornoCrates devre disi birakildi!");
+        getLogger().info("ZornoCrates devre dışı bırakıldı!");
     }
 
     @Override
@@ -65,17 +65,17 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
         Player player = (Player) sender;
 
         if (args.length == 0) {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8&l--- &bZornoEly Crate Yardim &8&l---"));
-            player.sendMessage(ChatColor.YELLOW + "/kasa olustur <isim> " + ChatColor.WHITE + "- Yeni kasa tanimlar");
-            player.sendMessage(ChatColor.YELLOW + "/kasa al <isim> " + ChatColor.WHITE + "- Kasa sandigini alirsin");
-            player.sendMessage(ChatColor.YELLOW + "/kasa anahtarver <oyuncu> <isim> <adet> " + ChatColor.WHITE + "- Anahtar verir");
-            player.sendMessage(ChatColor.YELLOW + "/kasa yonet <isim> " + ChatColor.WHITE + "- Kasa ayarlari GUI");
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8&l--- &5&lZornoEly Crate Yardım &8&l---"));
+            player.sendMessage(ChatColor.LIGHT_PURPLE + "/kasa olustur <isim> " + ChatColor.WHITE + "- Yeni kasa tanımlar");
+            player.sendMessage(ChatColor.LIGHT_PURPLE + "/kasa al <isim> " + ChatColor.WHITE + "- Kasa sandığını alırsın");
+            player.sendMessage(ChatColor.LIGHT_PURPLE + "/kasa anahtarver <oyuncu> <isim> <adet> " + ChatColor.WHITE + "- Anahtar verir");
+            player.sendMessage(ChatColor.LIGHT_PURPLE + "/kasa yonet <isim> " + ChatColor.WHITE + "- Kasa ayarları GUI");
             return true;
         }
 
         if (args[0].equalsIgnoreCase("olustur")) {
             if (args.length < 2) {
-                player.sendMessage(PREFIX + ChatColor.RED + "Kullanim: /kasa olustur <isim>");
+                player.sendMessage(PREFIX + ChatColor.RED + "Kullanım: /kasa olustur <isim>");
                 return true;
             }
             String name = args[1].toLowerCase();
@@ -87,20 +87,20 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
             ItemStack defaultKey = new ItemStack(Material.TRIPWIRE_HOOK);
             ItemMeta km = defaultKey.getItemMeta();
             if (km != null) {
-                km.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8[&7" + args[1].toUpperCase() + " KASA ANAHTARI&8]"));
+                km.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8[&5" + args[1].toUpperCase() + " KASA ANAHTARI&8]"));
                 defaultKey.setItemMeta(km);
             }
 
-            CrateData crate = new CrateData(args[1], Material.CHEST, "KIRMIZI", defaultKey, new ArrayList<>());
+            CrateData crate = new CrateData(args[1], Material.CHEST, "MOR", defaultKey, new ArrayList<>());
             crates.put(name, crate);
             saveData();
-            player.sendMessage(PREFIX + ChatColor.GREEN + "'" + args[1] + "' kasasi ZornoEly altyapisiyla olusturuldu!");
+            player.sendMessage(PREFIX + ChatColor.GREEN + "'" + args[1] + "' kasası başarıyla oluşturuldu!");
             return true;
         }
 
         if (args[0].equalsIgnoreCase("al")) {
             if (args.length < 2) {
-                player.sendMessage(PREFIX + ChatColor.RED + "Kullanim: /kasa al <isim>");
+                player.sendMessage(PREFIX + ChatColor.RED + "Kullanım: /kasa al <isim>");
                 return true;
             }
             String name = args[1].toLowerCase();
@@ -113,8 +113,8 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
             ItemStack item = new ItemStack(crate.blockMaterial);
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
-                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&l" + crate.displayName + " Kasası"));
-                meta.setLore(Collections.singletonList(ChatColor.translateAlternateColorCodes('&', "&7Yere koyarak kasayi aktif et!")));
+                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&5&l" + crate.displayName + " Kasası"));
+                meta.setLore(Collections.singletonList(ChatColor.translateAlternateColorCodes('&', "&7Yere koyarak kasayı aktif et!")));
                 item.setItemMeta(meta);
             }
             player.getInventory().addItem(item);
@@ -124,12 +124,12 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
 
         if (args[0].equalsIgnoreCase("anahtarver")) {
             if (args.length < 3) {
-                player.sendMessage(PREFIX + ChatColor.RED + "Kullanim: /kasa anahtarver <oyuncu> <isim> [adet]");
+                player.sendMessage(PREFIX + ChatColor.RED + "Kullanım: /kasa anahtarver <oyuncu> <isim> [adet]");
                 return true;
             }
             Player target = Bukkit.getPlayer(args[1]);
             if (target == null) {
-                player.sendMessage(PREFIX + ChatColor.RED + "Oyuncu bulunamadi!");
+                player.sendMessage(PREFIX + ChatColor.RED + "Oyuncu bulunamadı!");
                 return true;
             }
             String name = args[2].toLowerCase();
@@ -147,13 +147,13 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
             ItemStack key = crate.keyItem.clone();
             key.setAmount(amount);
             target.getInventory().addItem(key);
-            player.sendMessage(PREFIX + ChatColor.GREEN + target.getName() + " adli oyuncuya " + amount + " adet anahtar gönderildi.");
+            player.sendMessage(PREFIX + ChatColor.GREEN + target.getName() + " adlı oyuncuya " + amount + " adet anahtar gönderildi.");
             return true;
         }
 
         if (args[0].equalsIgnoreCase("yonet")) {
             if (args.length < 2) {
-                player.sendMessage(PREFIX + ChatColor.RED + "Kullanim: /kasa yonet <isim>");
+                player.sendMessage(PREFIX + ChatColor.RED + "Kullanım: /kasa yonet <isim>");
                 return true;
             }
             String name = args[1].toLowerCase();
@@ -170,35 +170,77 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
     }
 
     private void openManageGUI(Player player, CrateData crate) {
-        Inventory inv = Bukkit.createInventory(null, 27, ChatColor.translateAlternateColorCodes('&', "&8ZornoEly Kasa Yönetim: &b" + crate.displayName));
+        Inventory inv = Bukkit.createInventory(null, 27, ChatColor.translateAlternateColorCodes('&', "&8Yönetim: &5" + crate.displayName));
 
+        // Tema Değiştirme
         ItemStack colorItem = new ItemStack(Material.NAME_TAG);
         ItemMeta cm = colorItem.getItemMeta();
         if (cm != null) {
-            cm.setDisplayName(ChatColor.YELLOW + "Renk Degistir: " + ChatColor.GREEN + crate.colorTheme);
-            cm.setLore(Collections.singletonList(ChatColor.GRAY + "Tiklayarak renk temasini degistir."));
+            cm.setDisplayName(ChatColor.LIGHT_PURPLE + "Tema: " + ChatColor.WHITE + crate.colorTheme);
+            cm.setLore(Collections.singletonList(ChatColor.GRAY + "Değiştirmek için tıkla."));
             colorItem.setItemMeta(cm);
         }
-        inv.setItem(11, colorItem);
+        inv.setItem(10, colorItem);
 
+        // Blok Materyali Güncelleme (Elindeki blok/eşya ile)
+        ItemStack blockItem = new ItemStack(crate.blockMaterial);
+        ItemMeta bm = blockItem.getItemMeta();
+        if (bm != null) {
+            bm.setDisplayName(ChatColor.LIGHT_PURPLE + "Kasa Bloğu: " + ChatColor.WHITE + crate.blockMaterial.name());
+            bm.setLore(Collections.singletonList(ChatColor.GRAY + "Elindeki blok ile değiştirmek için tıkla."));
+            blockItem.setItemMeta(bm);
+        }
+        inv.setItem(12, blockItem);
+
+        // Anahtar Güncelleme
         ItemStack keyItem = new ItemStack(Material.TRIPWIRE_HOOK);
         ItemMeta km = keyItem.getItemMeta();
         if (km != null) {
-            km.setDisplayName(ChatColor.YELLOW + "Anahtari Guncelle");
-            km.setLore(Collections.singletonList(ChatColor.GRAY + "Elindeki esyayi bu kasanin anahtari yap."));
+            km.setDisplayName(ChatColor.LIGHT_PURPLE + "Anahtarı Güncelle");
+            km.setLore(Collections.singletonList(ChatColor.GRAY + "Elindeki eşyayı anahtar yap."));
             keyItem.setItemMeta(km);
         }
-        inv.setItem(13, keyItem);
+        inv.setItem(14, keyItem);
 
+        // Ödülleri Düzenle
         ItemStack rewardItem = new ItemStack(Material.EMERALD);
         ItemMeta rm = rewardItem.getItemMeta();
         if (rm != null) {
-            rm.setDisplayName(ChatColor.GREEN + "Ödülleri Ayarla");
-            rm.setLore(Collections.singletonList(ChatColor.GRAY + "Kasadan çıkacak ödülleri yapılandır."));
+            rm.setDisplayName(ChatColor.GREEN + "Ödülleri Düzenle");
+            rm.setLore(Arrays.asList(ChatColor.GRAY + "Tıklayarak ödül ekleme", ChatColor.GRAY + "menüsünü aç."));
             rewardItem.setItemMeta(rm);
         }
-        inv.setItem(15, rewardItem);
+        inv.setItem(16, rewardItem);
 
+        player.openInventory(inv);
+    }
+
+    private void openRewardsGUI(Player player, CrateData crate) {
+        Inventory inv = Bukkit.createInventory(null, 54, ChatColor.translateAlternateColorCodes('&', "&8Ödüller: &5" + crate.displayName));
+        for (int i = 0; i < crate.rewards.size() && i < 45; i++) {
+            if (crate.rewards.get(i) != null) {
+                inv.setItem(i, crate.rewards.get(i));
+            }
+        }
+        
+        ItemStack info = new ItemStack(Material.BOOK);
+        ItemMeta im = info.getItemMeta();
+        if (im != null) {
+            im.setDisplayName(ChatColor.YELLOW + "Bilgi");
+            im.setLore(Arrays.asList(ChatColor.GRAY + "Envantere koyduğun eşyalar", ChatColor.GRAY + "bu kasanın ödülü olur."));
+            info.setItemMeta(im);
+        }
+        inv.setItem(49, info);
+        player.openInventory(inv);
+    }
+
+    private void openPreviewGUI(Player player, CrateData crate) {
+        Inventory inv = Bukkit.createInventory(null, 27, ChatColor.translateAlternateColorCodes('&', "&5&l" + crate.displayName + " Ödülleri"));
+        for (int i = 0; i < crate.rewards.size() && i < 27; i++) {
+            if (crate.rewards.get(i) != null) {
+                inv.setItem(i, crate.rewards.get(i));
+            }
+        }
         player.openInventory(inv);
     }
 
@@ -208,32 +250,68 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
         Player player = (Player) event.getWhoClicked();
         String title = event.getView().getTitle();
 
-        if (title.contains("ZornoEly Kasa Yönetim:")) {
+        if (title.contains("Yönetim:")) {
             event.setCancelled(true);
             String rawTitle = ChatColor.stripColor(title);
-            String crateName = rawTitle.replace("ZornoEly Kasa Yönetim:", "").trim().toLowerCase();
+            String crateName = rawTitle.replace("Yönetim:", "").trim().toLowerCase();
             CrateData crate = crates.get(crateName);
             if (crate == null) return;
 
-            if (event.getRawSlot() == 11) {
-                if (crate.colorTheme.equals("KIRMIZI")) crate.colorTheme = "MAVI";
-                else if (crate.colorTheme.equals("MAVI")) crate.colorTheme = "YESIL";
-                else if (crate.colorTheme.equals("YESIL")) crate.colorTheme = "SARI";
-                else crate.colorTheme = "KIRMIZI";
+            if (event.getRawSlot() == 10) { // Tema değiştir
+                if (crate.colorTheme.equals("MOR")) crate.colorTheme = "ALTIN";
+                else if (crate.colorTheme.equals("ALTIN")) crate.colorTheme = "MAVİ";
+                else crate.colorTheme = "MOR";
 
                 saveData();
-                player.sendMessage(PREFIX + ChatColor.GREEN + "Kasa renk temasi güncellendi: " + crate.colorTheme);
+                player.sendMessage(PREFIX + ChatColor.LIGHT_PURPLE + "Tema güncellendi: " + crate.colorTheme);
                 openManageGUI(player, crate);
-            } else if (event.getRawSlot() == 13) {
+            } else if (event.getRawSlot() == 12) { // Kasa bloğunu eldeki eşya yap
+                ItemStack handItem = player.getInventory().getItemInMainHand();
+                if (handItem.getType() == Material.AIR || !handItem.getType().isBlock()) {
+                    player.sendMessage(PREFIX + ChatColor.RED + "Elinde geçerli yerleştirilebilir bir blok olmalı!");
+                    return;
+                }
+                crate.blockMaterial = handItem.getType();
+                saveData();
+                player.sendMessage(PREFIX + ChatColor.GREEN + "Kasa blok materyali güncellendi: " + crate.blockMaterial.name());
+                openManageGUI(player, crate);
+            } else if (event.getRawSlot() == 14) { // Anahtar güncelle
                 ItemStack handItem = player.getInventory().getItemInMainHand();
                 if (handItem.getType() == Material.AIR) {
-                    player.sendMessage(PREFIX + ChatColor.RED + "Elinde yeni anahtar olacak bir esya olmali!");
+                    player.sendMessage(PREFIX + ChatColor.RED + "Elinde yeni anahtar olacak bir eşya olmalı!");
                     return;
                 }
                 crate.keyItem = handItem.clone();
                 saveData();
-                player.sendMessage(PREFIX + ChatColor.GREEN + "Kasa anahtari elindeki eşya ile güncellendi!");
+                player.sendMessage(PREFIX + ChatColor.GREEN + "Kasa anahtarı güncellendi!");
+            } else if (event.getRawSlot() == 16) { // Ödül menüsü
+                openRewardsGUI(player, crate);
             }
+        } else if (title.contains("Ödüller:")) {
+            String rawTitle = ChatColor.stripColor(title);
+            String crateName = rawTitle.replace("Ödüller:", "").trim().toLowerCase();
+            CrateData crate = crates.get(crateName);
+            if (crate == null) return;
+
+            if (event.getRawSlot() == 49) {
+                event.setCancelled(true);
+                return;
+            }
+
+            Bukkit.getScheduler().runTaskLater(this, () -> {
+                Inventory inv = event.getInventory();
+                List<ItemStack> newRewards = new ArrayList<>();
+                for (int i = 0; i < 45; i++) {
+                    ItemStack item = inv.getItem(i);
+                    if (item != null && item.getType() != Material.AIR) {
+                        newRewards.add(item.clone());
+                    }
+                }
+                crate.rewards = newRewards;
+                saveData();
+            }, 2L);
+        } else if (title.contains("Ödülleri")) {
+            event.setCancelled(true);
         }
     }
 
@@ -249,7 +327,7 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
                     placedCrates.put(loc, crateName);
                     saveData();
                     spawnHologram(loc, crates.get(crateName));
-                    event.getPlayer().sendMessage(PREFIX + ChatColor.GREEN + "ZornoEly Kasa koruması ile yerleştirildi!");
+                    event.getPlayer().sendMessage(PREFIX + ChatColor.GREEN + "Kasa başarıyla yerleştirildi ve korumaya alındı!");
                 }
             }
         }
@@ -263,7 +341,7 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
             String crateName = placedCrates.remove(loc);
             saveData();
             removeHologram(loc);
-            event.getPlayer().sendMessage(PREFIX + ChatColor.YELLOW + "Kasa başarıyla kaldırıldı.");
+            event.getPlayer().sendMessage(PREFIX + ChatColor.YELLOW + "Kasa kaldırıldı.");
             event.getBlock().setType(Material.AIR);
             
             CrateData crate = crates.get(crateName);
@@ -271,7 +349,7 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
                 ItemStack item = new ItemStack(crate.blockMaterial);
                 ItemMeta meta = item.getItemMeta();
                 if (meta != null) {
-                    meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&b&l" + crate.displayName + " Kasası"));
+                    meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&5&l" + crate.displayName + " Kasası"));
                     item.setItemMeta(meta);
                 }
                 loc.getWorld().dropItemNaturally(loc, item);
@@ -292,18 +370,27 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
         if (crate == null) return;
 
         if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-            player.sendMessage(PREFIX + ChatColor.AQUA + crate.displayName + " Kasası içerikleri inceleniyor...");
+            openPreviewGUI(player, crate);
         } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             ItemStack hand = player.getInventory().getItemInMainHand();
             if (!isSimilarKey(hand, crate.keyItem)) {
-                player.sendMessage(PREFIX + ChatColor.RED + "Bu kasayı açmak için gereken ZornoEly anahtarına sahip değilsin!");
+                player.sendMessage(PREFIX + ChatColor.RED + "Bu kasayı açmak için gereken anahtara sahip değilsin!");
+                return;
+            }
+
+            if (crate.rewards.isEmpty()) {
+                player.sendMessage(PREFIX + ChatColor.RED + "Bu kasanın henüz tanımlanmış bir ödülü yok!");
                 return;
             }
 
             hand.setAmount(hand.getAmount() - 1);
-            player.sendMessage(PREFIX + ChatColor.GOLD + "🎁 " + crate.displayName + " kasası açılıyor...");
-            player.getInventory().addItem(new ItemStack(Material.DIAMOND, 3));
-            player.sendTitle(ChatColor.translateAlternateColorCodes('&', "&b&lZORNOELY KASA"), ChatColor.YELLOW + "3x Elmas Kazandın!", 10, 40, 10);
+            player.sendMessage(PREFIX + ChatColor.LIGHT_PURPLE + "🎁 " + crate.displayName + " kasası açılıyor...");
+            
+            Random random = new Random();
+            ItemStack reward = crate.rewards.get(random.nextInt(crate.rewards.size())).clone();
+            player.getInventory().addItem(reward);
+            
+            player.sendTitle(ChatColor.translateAlternateColorCodes('&', "&5&lZORNOELY KASA"), ChatColor.LIGHT_PURPLE + "Ödülün Envanterine Eklendi!", 10, 40, 10);
         }
     }
 
@@ -319,23 +406,23 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
     private void spawnHologram(Location loc, CrateData crate) {
         removeHologram(loc);
         List<ArmorStand> stands = new ArrayList<>();
-        Location baseLoc = loc.clone().add(0.5, 0.3, 0.5);
+        Location baseLoc = loc.clone().add(0.5, 1.2, 0.5);
 
         String[] lines = {
-            ChatColor.translateAlternateColorCodes('&', "&8Sağ-Tık &7Kasayı Açar!"),
-            ChatColor.translateAlternateColorCodes('&', "&8Sol-Tık &7Kasayı Görüntüler!"),
+            ChatColor.translateAlternateColorCodes('&', "&5&l" + crate.displayName + " Kasası"),
             "",
-            ChatColor.translateAlternateColorCodes('&', "&8&l" + crate.displayName + " Kasası!")
+            ChatColor.translateAlternateColorCodes('&', "&7Sol-Tık: &dİçeriği Gör"),
+            ChatColor.translateAlternateColorCodes('&', "&7Sağ-Tık: &dKasayı Aç")
         };
 
         for (int i = 0; i < lines.length; i++) {
-            Location lineLoc = baseLoc.clone().add(0, i * 0.25, 0);
-            final int index = i; // Fix lambda effectively final requirement
+            Location lineLoc = baseLoc.clone().add(0, (lines.length - 1 - i) * 0.25, 0);
+            final int index = i;
             ArmorStand stand = loc.getWorld().spawn(lineLoc, ArmorStand.class, s -> {
                 s.setGravity(false);
                 s.setVisible(false);
                 s.setCustomNameVisible(true);
-                s.setCustomName(lines[lines.length - 1 - index]);
+                s.setCustomName(lines[index]);
             });
             stands.add(stand);
         }
@@ -361,6 +448,7 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
             getConfig().set(path + ".colorTheme", c.colorTheme);
             getConfig().set(path + ".material", c.blockMaterial.name());
             getConfig().set(path + ".keyItem", c.keyItem);
+            getConfig().set(path + ".rewards", c.rewards);
         }
 
         getConfig().set("placed", null);
@@ -371,66 +459,4 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
             getConfig().set(p + ".world", l.getWorld().getName());
             getConfig().set(p + ".x", l.getBlockX());
             getConfig().set(p + ".y", l.getBlockY());
-            getConfig().set(p + ".z", l.getBlockZ());
-            getConfig().set(p + ".crate", entry.getValue());
-        }
-        saveConfig();
-    }
-
-    private void loadData() {
-        crates.clear();
-        placedCrates.clear();
-        ConfigurationSection sec = getConfig().getConfigurationSection("crates");
-        if (sec != null) {
-            for (String name : sec.getKeys(false)) {
-                String path = "crates." + name;
-                String displayName = getConfig().getString(path + ".displayName", name);
-                String colorTheme = getConfig().getString(path + ".colorTheme", "KIRMIZI");
-                Material mat = Material.matchMaterial(getConfig().getString(path + ".material", "CHEST"));
-                if (mat == null) mat = Material.CHEST;
-                ItemStack key = getConfig().getItemStack(path + ".keyItem");
-                if (key == null) key = new ItemStack(Material.TRIPWIRE_HOOK);
-
-                crates.put(name.toLowerCase(), new CrateData(displayName, mat, colorTheme, key, new ArrayList<>()));
-            }
-        }
-
-        ConfigurationSection pSec = getConfig().getConfigurationSection("placed");
-        if (pSec != null) {
-            for (String key : pSec.getKeys(false)) {
-                String path = "placed." + key;
-                String worldName = getConfig().getString(path + ".world");
-                if (worldName == null || Bukkit.getWorld(worldName) == null) continue;
-                Location l = new Location(
-                        Bukkit.getWorld(worldName),
-                        getConfig().getInt(path + ".x"),
-                        getConfig().getInt(path + ".y"),
-                        getConfig().getInt(path + ".z")
-                );
-                String crateName = getConfig().getString(path + ".crate");
-                if (crateName != null && crates.containsKey(crateName)) {
-                    placedCrates.put(l, crateName);
-                    spawnHologram(l, crates.get(crateName));
-                }
-            }
-        }
-    }
-
-    private static class CrateData {
-        private String name;
-        private String displayName;
-        private Material blockMaterial;
-        private String colorTheme;
-        private ItemStack keyItem;
-        private List<ItemStack> rewards;
-
-        public CrateData(String displayName, Material blockMaterial, String colorTheme, ItemStack keyItem, List<ItemStack> rewards) {
-            this.name = displayName.toLowerCase();
-            this.displayName = displayName;
-            this.blockMaterial = blockMaterial;
-            this.colorTheme = colorTheme;
-            this.keyItem = keyItem;
-            this.rewards = rewards;
-        }
-    }
-                    }
+            getConfig().se
