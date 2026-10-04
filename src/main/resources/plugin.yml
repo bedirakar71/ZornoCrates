@@ -1,0 +1,8 @@
+name: ZornoCrates
+version: 1.0
+main: com.zornoely.crates.Main
+api-version: '1.20'
+commands:
+  kasa:
+    description: ZornoCrates ana komutu
+    permission: zornocrates.admin
