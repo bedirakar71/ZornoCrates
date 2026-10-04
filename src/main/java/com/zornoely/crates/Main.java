@@ -413,7 +413,7 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
 
         for (int i = 0; i < lines.length; i++) {
             Location lineLoc = baseLoc.clone().add(0, (lines.length - 1 - i) * 0.25, 0);
-            final int index = i; // Hata burada düzeltildi (1 yerine i oldu)
+            final int index = i;
             ArmorStand stand = loc.getWorld().spawn(lineLoc, ArmorStand.class, s -> {
                 s.setGravity(false);
                 s.setVisible(false);
@@ -462,4 +462,6 @@ public final class Main extends JavaPlugin implements Listener, CommandExecutor 
     }
 
     @SuppressWarnings("unchecked")
-    private void loadDat
+    private void loadData() {
+        crates.clear();
+        placed
